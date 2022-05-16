@@ -1,10 +1,14 @@
 package src
 
 import (
+	"fmt"
 	"github.com/juju/errors"
 	"io"
 	"net"
+	"strings"
 )
+
+var NetWorkClosedError = fmt.Errorf("network connection closed")
 
 func GetFreePort() (int, error) {
 	addr, err := net.ResolveTCPAddr("tcp", "localhost:0")
@@ -66,4 +70,11 @@ func Join(c1, c2 net.Conn) error {
 	go pipe(c1, c2)
 	go pipe(c2, c1)
 	return <-errChan
+}
+
+func handlerCloseError(err error) error {
+	if strings.Contains(err.Error(), "use of closed network connection") {
+		return NetWorkClosedError
+	}
+	return errors.Trace(err)
 }

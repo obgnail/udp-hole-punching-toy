@@ -15,10 +15,11 @@ const (
 )
 
 var (
-	PeerStr   = fmt.Sprintf(YellowFormat, "Peer")
-	ServerStr = fmt.Sprintf(RedFormat, "Server")
-	LocalStr  = fmt.Sprintf(GreenFormat, "Local")
-	RemoteStr = fmt.Sprintf(BlueFormat, "Remote")
+	PeerStr    = fmt.Sprintf(YellowFormat, "Peer")
+	ServerStr  = fmt.Sprintf(RedFormat, "Server")
+	LocalStr   = fmt.Sprintf(GreenFormat, "Local")
+	RemoteStr  = fmt.Sprintf(BlueFormat, "Remote")
+	SubPeerStr = fmt.Sprintf(YellowFormat, "SubPeer")
 )
 
 func init() {

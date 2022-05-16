@@ -79,11 +79,13 @@ func (s *Server) deleteExpirePeer() {
 func (s *Server) handleConn(listener *net.UDPConn, remoteAddr *net.UDPAddr, typ string, content string) error {
 	switch typ {
 	case FlagHeartbeat:
+		log.Debugf("%s -> %s | %s | %s", PeerStr, ServerStr, remoteAddr.String(), "heartbeat")
 		s.storePeer(content, remoteAddr)
-		heartbeatMsg := BuildHeartbeatMsg("NULL")
-		if _, err := listener.WriteTo(heartbeatMsg, remoteAddr); err != nil {
-			return errors.Trace(err)
-		}
+		// 为了保持简单,server只收不发
+		//heartbeatMsg := BuildHeartbeatMsg("NULL")
+		//if _, err := listener.WriteToUDP(heartbeatMsg, remoteAddr); err != nil {
+		//	return errors.Trace(err)
+		//}
 	case FlagRegisterPeer:
 		// content: peerID
 		log.Debugf("%s -> %s | %s | %s", PeerStr, ServerStr, remoteAddr.String(), "Register peer")
@@ -95,7 +97,7 @@ func (s *Server) handleConn(listener *net.UDPConn, remoteAddr *net.UDPAddr, typ 
 		}
 	case FlagPunchHole:
 		// content: peerID=127.0.0.1:7777
-		log.Debugf("%s -> %s | %s | %s", PeerStr, ServerStr, remoteAddr.String(), "Punch Hole")
+		log.Debugf("%s -> %s | %s | %s", PeerStr, ServerStr, remoteAddr.String(), "punch Hole")
 		contentList := strings.Split(content, "=")
 		if len(contentList) != 2 {
 			return fmt.Errorf("error message format: %s", content)
